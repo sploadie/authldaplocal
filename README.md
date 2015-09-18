@@ -19,17 +19,17 @@ As of Dokuwiki release 2013-05-10 (Weatherwax) auth plugins are treated almost i
 
 Mark 'Use Access Control Lists', select 'authldaplocal' as the authentication backend:
 
-![Screenshot 1 of configuration page](https://github.com/kvormweg/ldaplocal/tree/master/ldaplocal1.jpg "Screenshot 1 of configuration page") 
+![Screenshot 1 of configuration page](https://github.com/kvormweg/ldaplocal/tree/master/ldaplocal1.jpg "Screenshot 1 of configuration page")
 
 configure your LDAP server:
 
-![Screenshot 2 of configuration page](https://github.com/kvormweg/ldaplocal/tree/master/ldaplocal2.jpg "Screenshot 2 of configuration page") 
+![Screenshot 2 of configuration page](https://github.com/kvormweg/ldaplocal/tree/master/ldaplocal2.jpg "Screenshot 2 of configuration page")
 
 ````
 # Use access control
 $conf['useacl'] = 1;
 #  Authentication type LDAP using local ACLs
-$conf['authtype']     = 'authldaplocal';  
+$conf['authtype']     = 'authldaplocal';
 # LDAP server URL (required)
 $conf['plugin']['authldaplocal']['server']      = 'ldap://ldap.example.com:389';
 # port (required but may be zero)
@@ -42,7 +42,7 @@ $conf['plugin']['authldaplocal']['userfilter']  = '(&(uid=%{user})(objectClass=p
 $conf['plugin']['authldaplocal']['version']    = 3;
 ````
 ## Functions
-The backend will try to authenticate every login against the configured LDAP server. In addition it will look up every user in your local /conf/users.auth.php. When both conditions are met, the user is logged in.
+The backend will try to authenticate every login against the configured LDAP server. In addition it will look up every user in your local /conf/users.auth.php. If the LDAP authenticates but the user does not exist locally, the user will be created.
 
 Groups may be acquired from the LDAP but it is recommended to create and use local groups.
 
@@ -50,4 +50,3 @@ The user manager can be used to add, delete or edit users. User information is p
 
 ## ToDo
 Reuse of code from other authentication backends has to be improved.
-

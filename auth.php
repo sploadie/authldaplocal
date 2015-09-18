@@ -74,7 +74,7 @@ class auth_plugin_authldaplocal extends DokuWiki_Auth_Plugin {
 
         // check if local user exists
         if($this->users === null) $this->_loadUserData();
-        if(!isset($this->users[$user])) return false;
+        //if(!isset($this->users[$user])) return false;
 
         // indirect user bind
         if($this->getConf('binddn') && $this->getConf('bindpw')) {
@@ -119,6 +119,10 @@ class auth_plugin_authldaplocal extends DokuWiki_Auth_Plugin {
                 return false;
             }
             $this->bound = 1;
+            if(!isset($this->users[$user])) {
+              // Create user if they do not yet exist
+              $this->createUser($user, "pwd", "name", "mail");
+            }
             return true;
         } else {
             // See if we can find the user
@@ -136,6 +140,10 @@ class auth_plugin_authldaplocal extends DokuWiki_Auth_Plugin {
                 return false;
             }
             $this->bound = 1;
+            if(!isset($this->users[$user])) {
+              // Create user if they do not yet exist
+              $this->createUser($user, "pwd", "name", "mail");
+            }
             return true;
         }
         return false;
@@ -270,7 +278,7 @@ class auth_plugin_authldaplocal extends DokuWiki_Auth_Plugin {
         }
         // merge local groups into group list
         if($this->users === null) $this->_loadUserData();
-        if(is_array($this->users[$user]['grps'])) {
+        if(isset($this->users[$user]) && is_array($this->users[$user]['grps'])) {
             foreach($this->users[$user]['grps'] as $group) {
                 if(in_array($group,$info['grps'])) continue;
                 $info['grps'][] = $group;
